@@ -1,0 +1,105 @@
+/* Main container for the dashboard */
+.dashboard-container {
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+/* General styling for sections like "Your Details" and "Previous Predictions" */
+.dashboard-section {
+    margin-top: 28px;
+}
+
+/* Grid layout for user details */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 16px;
+    margin-top: 10px;
+}
+
+/* Styling for the cards showing user details */
+.detail-card {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.detail-card strong {
+    font-size: 1.1em;
+}
+
+/* Card containing the predictions table */
+.predictions-card {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow-x: auto; /* For responsiveness on small screens */
+}
+
+/* Styling for the predictions table */
+.predictions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.predictions-table th,
+.predictions-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.predictions-table th {
+    border-bottom: 2px solid #ddd;
+    font-weight: 600;
+}
+
+/* Centered text for the "No predictions" row */
+.no-predictions-cell {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+}
+
+/* --- Badge Styling --- */
+
+/* Base style for all badges */
+.badge {
+    padding: 5px 12px;
+    border-radius: 15px; /* Pill shape */
+    font-weight: bold;
+    font-size: 0.9em;
+    text-transform: capitalize;
+}
+
+/* Specific color for Benign predictions */
+.badge-benign {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Specific color for Malignant predictions */
+.badge-malignant {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+.update-profile-button{
+    display: block;
+    margin: 7px auto;
+    width: 400px;
+    height: 30px;
+    
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  background-color: #2c3e50; /* A modern, dark slate blue */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}

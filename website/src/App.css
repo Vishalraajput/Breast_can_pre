@@ -93,7 +93,7 @@ body {
   max-width: 520px
 }
 
-.cta {
+.hero .cta {
   display: inline-block;
   margin-top: 18px;
   padding: 12px 22px;
@@ -121,7 +121,9 @@ body {
   border-radius: 12px;
   padding: 22px;
   border: 1px solid #ececec;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  
 }
 
 /* Predict page layout */

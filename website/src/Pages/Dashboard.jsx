@@ -1,53 +1,74 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/api";
-
+import "./Dashboard.css"; // The CSS file remains the same
+import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
-    const [preds, setPreds] = useState([]);
-
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
-        async function load() {
+        async function loadDashboardData() {
             try {
-                const res = await api.get("/predict/history");
-                setPreds(res.data || []);
-            } catch (e) { console.error(e) }
+                const response = await api.get("/dashboard");
+                setUser(response.data);
+            } catch (e) {
+                console.error("Error loading dashboard data:", e);
+                setUser(null);
+            }
         }
-        load();
+        loadDashboardData();
     }, []);
 
+    if (!user) {
+        return <div className="dashboard-container"><h2>Login First or Check Your Network</h2></div>;
+    }
+
     return (
-        <div>
-            <h2>Welcome, Dr. Elena Petrova!</h2>
-            <section>
+        <div className="dashboard-container">
+            <h2>Welcome, {user.name}!</h2>
+
+            <section className="dashboard-section">
                 <h3>Your Details</h3>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                    <div className="card">Full Name<br /><strong>Dr. Elena Petrova</strong></div>
-                    <div className="card">Date of Birth<br /><strong>1985-03-15</strong></div>
-                    <div className="card">Email<br /><strong>elena.petrova@example.com</strong></div>
-                    <div className="card">Blood Group<br /><strong>A+</strong></div>
+                <div className="details-grid">
+                    <div className="detail-card">Full Name<br /><strong>{user.name}</strong></div>
+                    <div className="detail-card">Date of Birth<br /><strong>{user.dob}</strong></div>
+                    <div className="detail-card">Email<br /><strong>{user.email}</strong></div>
+                    <div className="detail-card">Blood Group<br /><strong>{user.blood_group}</strong></div>
                 </div>
             </section>
-
-            <section style={{ marginTop: 28 }}>
+            <button className="update-profile-button" onClick={() => navigate('/update-profile')}>Update Profile</button>
+            <section className="dashboard-section">
                 <h3>Previous Predictions</h3>
-                <div className="card">
-                    <table className="table">
-                        <thead>
-                            <tr><th>Date</th><th>Image Type</th><th>Result</th></tr>
+                {user.history && user.history.length > 0 ? (<>
+                <div className="predictions-card">
+                        <table className="predictions-table">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Image Filename</th>
+                                <th>Result</th>
+                                <th>Confidence</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            {preds.map(p => (
-                                <tr key={p._id}>
-                                    <td>{new Date(p.createdAt).toISOString().split("T")[0]}</td>
-                                    <td>{p.imageType || "Unknown"}</td>
-                                    <td>
-                                        <span className={`badge ${p.predicted === 'Benign' ? 'benign' : 'malig'}`}>{p.predicted}</span>
-                                    </td>
-                                </tr>
-                            ))}
-                            {preds.length === 0 && <tr><td colSpan={3}>No predictions yet.</td></tr>}
+
+                            {user.history.map((p, index) =>(
+                                    <tr key={p.date || index}>
+                                        <td>{new Date(p.date).toLocaleDateString()}</td>
+                                        <td>{p.image_url || "N/A"}</td>
+                                        <td>
+                                            <span className={`badge ${p.result.toLowerCase() === 'benign' ? 'badge-benign' : 'badge-malignant'}`}>
+                                                {p.result}
+                                            </span>
+                                        </td>
+                                        <td>{(p.predict * 100).toFixed(1)}</td>
+                                    </tr>
+                                ))
+                            }
                         </tbody>
                     </table>
                 </div>
+                </>):(  <p style={{textAlign: "center"}}>No predictions yet.</p>)}
+                    
             </section>
         </div>
     );
